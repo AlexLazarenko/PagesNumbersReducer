@@ -18,7 +18,7 @@ mvn spring-boot:run
 |-------| ------- | ----------- |
 |GET|/v2/api-docs| 	swagger json|
 |GET|/swagger-ui.html| 	swagger html|
-|GET|/reducedPageNumbers?rawPageNumbers=| 	get reduced set numbers|
+|GET|/reducedPageNumbers| 	get reduced set numbers|
 
 
 Screenshot
