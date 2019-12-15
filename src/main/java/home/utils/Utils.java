@@ -2,20 +2,45 @@ package home.utils;
 
 import java.util.*;
 
+/**
+ * This utils class that contains all necessary methods
+ */
 public class Utils {
-    public String[] findNumbers(String a) { //make string array from string
-        if (a==null) {throw new NullPointerException("data is null");
-        } else {
-        String[] array = a.split(",+");
-        return array;}
+    /**
+     * Format string to String[] array, expected input
+     * format:"7,9,3,1,2,10"
+     *
+     * @param inputData
+     * @return inputData String[] array
+     */
+    public String[] makeStringArrayFromReceivedData(String inputData) {
+        return inputData.split(",+");
     }
 
-    public List<Integer> makeList(List<String> store) { //make integer list from string list by parseInt
-        List<Integer> list = new ArrayList<Integer>();
-        for (int n = 0; n < store.size(); n++) {
+    /**
+     * Format String[] array to List<String>
+     *
+     * @param stringArrayFromReceivedData
+     * @return List<String> stringListFromReceivedData
+     */
+    public List<String> makeStringList(String[] stringArrayFromReceivedData) {
+        return Arrays.asList(stringArrayFromReceivedData);
+    }
+
+    /**
+     * make List<Integer> from List<String> by parseInt
+     *
+     * @param stringListFromReceivedData
+     * @return List<Integer> intListFromReceivedData
+     * @throws IllegalArgumentException when input data is <= 0
+     * @throws NumberFormatException    on Integer.parseInt() when input incorrect data
+     */
+    public List<Integer> makeIntListToSortLater(List<String> stringListFromReceivedData) {
+        List<Integer> intListFromReceivedData = new ArrayList<>();
+        for (int n = 0; n < stringListFromReceivedData.size(); n++) {
             try {
-                list.add(Integer.parseInt(store.get(n)));
-                if (list.get(n) <= 0) {
+                intListFromReceivedData.add(Integer.parseInt(stringListFromReceivedData.get(n)));
+                if (intListFromReceivedData.get(n) <= 0) {
                     throw new IllegalArgumentException("Pages must bee whole positive numbers");
                 }
             } catch (NumberFormatException e) {
@@ -23,66 +48,98 @@ public class Utils {
                 return null;
             }
         }
-        return list;
+        return intListFromReceivedData;
     }
 
-    public Set<Integer> makeTreeSet(List<Integer> list) { //make Integer TreeSet from List to sort and ignore replications
-        Set<Integer> set = new TreeSet<Integer>(list);
-        return set;
+    /**
+     * make Integer TreeSet from  List<Integer> to sort and ignore replications
+     *
+     * @param intListFromReceivedData
+     * @return Set<Integer> sortedIntegerSetFromReceivedData
+     */
+    public Set<Integer> makeSortedSet(List<Integer> intListFromReceivedData) {
+        return new TreeSet<>(intListFromReceivedData);
     }
 
-    public StringBuilder sBuilder(Set<Integer> set) { //make sorted string by StringBuilder with necessary marking
-        List<Integer> list = new ArrayList<>(set);
-        StringBuilder sBuilder = new StringBuilder();
-        int store = list.get(0);
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i) != (store + 1)) {
-                if (list.get(i) == list.get(0)) {
-                    sBuilder.append(list.get(i));
+    /**
+     * make sorted string by StringBuilder with necessary marking
+     *
+     * @param sortedIntegerSetFromReceivedData
+     * @return StringBuilder formedData
+     */
+    public StringBuilder makingMarkingWithStringBuilder(Set<Integer> sortedIntegerSetFromReceivedData) {
+        List<Integer> sortedList = new ArrayList<>(sortedIntegerSetFromReceivedData);
+        StringBuilder formedData = new StringBuilder();
+        int store = sortedList.get(0);
+        for (int i = 0; i < sortedList.size(); i++) {
+            if (sortedList.get(i) != (store + 1)) {
+                if (sortedList.get(i).equals(sortedList.get(0))) {
+                    formedData.append(sortedList.get(i));
                 } else {
-                    sBuilder.append("," + list.get(i));
-                    store = list.get(i);
+                    formedData.append(",");
+                    formedData.append(sortedList.get(i));
+                    store = sortedList.get(i);
                 }
             } else {
-                sBuilder.append("-" + list.get(i));
-                store = list.get(i);
+                formedData.append("-");
+                formedData.append(sortedList.get(i));
+                store = sortedList.get(i);
             }
         }
-        return sBuilder;
+        return formedData;
     }
 
-    public StringBuilder numbersReducer(StringBuilder sBuilder) { //reduce numbers by marking
-        StringBuilder str = new StringBuilder();
-        String[] array = sBuilder.toString().split(",+");//split sBuilder by ","(making string array)
-        for (int i = 0; i < array.length; i++) {
-            String[] store = array[i].split("-");//split string array elements by "-" to reduce sequence elements
+    /**
+     * Format data using marking
+     *
+     * @param formedData
+     * @return StringBuilder resultData
+     */
+    public StringBuilder formDataUsingMarking(StringBuilder formedData) {
+        StringBuilder resultData = new StringBuilder();
+        String[] formedDataArray = formedData.toString().split(",+");//split formedData by ","(making string array)
+        for (int i = 0; i < formedDataArray.length; i++) {
+            String[] store = formedDataArray[i].split("-");//split string array(formedDataArray) elements by "-" to reduce sequence elements
             if (store.length > 2) {
-                if (array[i] == array[0]) {
-                    str.append(store[0] + "-" + store[store.length - 1]);
+                if (formedDataArray[i].equals(formedDataArray[0])) {
+                    resultData.append(store[0]);
+                    resultData.append("-");
+                    resultData.append(store[store.length - 1]);
                 } else {
-                    str.append("," + store[0] + "-" + store[store.length - 1]);
+                    resultData.append(",");
+                    resultData.append(store[0]);
+                    resultData.append("-");
+                    resultData.append(store[store.length - 1]);
                 }
             }
             if (store.length == 2) {
-                if (array[i] == array[0]) {
-                    str.append(store[0] + "," + store[store.length - 1]);
+                if (formedDataArray[i].equals(formedDataArray[0])) {
+                    resultData.append(store[0]);
+                    resultData.append(",");
+                    resultData.append(store[store.length - 1]);
                 } else {
-                    str.append("," + store[0] + "," + store[store.length - 1]);
+                    resultData.append(",");
+                    resultData.append(store[0]);
+                    resultData.append(",");
+                    resultData.append(store[store.length - 1]);
                 }
             }
             if (store.length < 2) {
-                if (array[i] == array[0]) {
-                    str.append(store[0]);
+                if (formedDataArray[i].equals(formedDataArray[0])) {
+                    resultData.append(store[0]);
                 } else {
-                    str.append("," + store[0]);
+                    resultData.append(",");
+                    resultData.append(store[0]);
                 }
             }
         }
-            return str;
-        }
+        return resultData;
+    }
 
-    public StringBuilder reduce(String a) { //final function that using all methods
-        StringBuilder str=numbersReducer(sBuilder(makeTreeSet(makeList(Arrays.asList(findNumbers(a))))));
-        return str;
+    /**
+     * This method call all necessary methods to realize logic
+     */
+    public StringBuilder reduceIgnoringReplications(String input) { //final function that using all methods
+        return formDataUsingMarking(makingMarkingWithStringBuilder(makeSortedSet(makeIntListToSortLater(makeStringList(makeStringArrayFromReceivedData(input))))));
     }
-    }
+}

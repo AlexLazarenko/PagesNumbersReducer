@@ -22,9 +22,8 @@ public class PagesReducerControllerTest {
     }
 
     @Test
-    public void reduce() throws Exception {
-
-        StringBuilder sBuilderActual = subject.reduce("2,7,3,1");
+    public void reduceIgnoringReplications() throws Exception {
+        StringBuilder sBuilderActual = subject.reduceIgnoringReplications("2,7,3,1");
         assertThat(sBuilderActual.toString(), is("1-3,7"));
     }
 
